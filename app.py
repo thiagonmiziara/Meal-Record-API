@@ -15,5 +15,13 @@ def meal_list():
     return {"meals": [meal.to_dict() for meal in meals_data]}
 
 
+@app.route("/meal/<int:meal_id>", methods=["GET"])
+def meal_by_id(meal_id):
+    meal = Meal.query.get(meal_id)
+    if not meal:
+        return {"error": "Meal not found"}, 404
+    return meal.to_dict()
+
+
 if __name__ == "__main__":
     app.run(debug=True)
