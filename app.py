@@ -38,5 +38,19 @@ def create_meal():
     return {"message": "Meal created successfully"}
 
 
+@app.route("/meal/<int:meal_id>", methods=["PUT"])
+def update_meal(meal_id):
+    meal = Meal.query.get(meal_id)
+    if not meal:
+        return {"error": "Meal not found"}, 404
+    data = request.get_json()
+    meal.name = data.get("name", meal.name)
+    meal.description = data.get("description", meal.description)
+    meal.datetime = data.get("datetime", datetime.datetime.now())
+    meal.dieting = data.get("dieting", meal.dieting)
+    db.session.commit()
+    return {"message": "Meal updated successfully"}
+
+
 if __name__ == "__main__":
     app.run(debug=True)
