@@ -1,0 +1,13 @@
+services:
+  db:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_USER: "admin"
+      MYSQL_PASSWORD: "admin123"
+      MYSQL_DATABASE: "meal-record"
+      MYSQL_ROOT_PASSWORD: "admin123"
+    ports:
+      - "3306:3306" # Mapeia a porta 3307 do host para a porta 3306 do container
+    volumes:
+      - /home/thiagonunesmiziara/Desktop/projects-pessoal/database_meals:/var/lib/mysql
