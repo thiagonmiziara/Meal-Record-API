@@ -1,3 +1,4 @@
+import datetime
 from flask import Flask, request
 from database import db
 from models.meal import Meal
@@ -21,6 +22,20 @@ def meal_by_id(meal_id):
     if not meal:
         return {"error": "Meal not found"}, 404
     return meal.to_dict()
+
+
+@app.route("/meal", methods=["POST"])
+def create_meal():
+    data = request.get_json()
+    new_meal = Meal(
+        name=data["name"],
+        description=data["description"],
+        datetime=datetime.datetime.now(),
+        dieting=data.get("dieting", False),
+    )
+    db.session.add(new_meal)
+    db.session.commit()
+    return {"message": "Meal created successfully"}
 
 
 if __name__ == "__main__":
