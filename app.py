@@ -1,17 +1,18 @@
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
+from flask import Flask, request
+from database import db
+from models.meal import Meal
 
-app = Flask(__name__)
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "your_secret_key"
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
 
-db = SQLAlchemy(app)
+db.init_app(app)
 
 
-@app.route("/", methods=["GET"])
-def hello():
-    return "Hello, World!"
+@app.route("/meals", methods=["GET"])
+def meal_list():
+    meals_data = Meal.query.all()
+    return {"meals": [meal.to_dict() for meal in meals_data]}
 
 
 if __name__ == "__main__":
